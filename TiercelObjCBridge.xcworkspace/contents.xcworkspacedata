@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workspace
+   version = "1.0">
+   <FileRef
+      location = "group:TiercelObjCBridge.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:../&#x4e2a;&#x4eba;&#x5f00;&#x6e90;&#x5e93;/Tiercel/Tiercel.xcodeproj">
+   </FileRef>
+</Workspace>
