@@ -9,9 +9,9 @@
 import UIKit
 import Tiercel
 
-@objcMembers class TRSessionManager: NSObject {
+@objcMembers public class TRSessionManager: NSObject {
 
-    public var sessionManager: SessionManager
+    private let sessionManager: SessionManager
     
     public static var logLevel: LogLevel = .detailed
 
@@ -67,7 +67,7 @@ import Tiercel
         return sessionManager.timeRemaining
     }
 
-    @objc(initWithIdentifier:configuration:operationQueue:)
+
     public init(_ identifier: String,
                             configuration: TRSessionConfiguration,
                             operationQueue: DispatchQueue = DispatchQueue(label: "com.Tiercel.SessionManager.operationQueue")) {
@@ -78,14 +78,39 @@ import Tiercel
         cache = sessionManager.cache
         self.identifier = sessionManager.identifier
         super.init()
+
+    }
+
+
+    public convenience init(_ identifier: String,
+                            configuration: TRSessionConfiguration) {
+        self.init(identifier, configuration: configuration)
     }
     
     public func invalidate() {
         sessionManager.invalidate()
+
     }
-    
-    
+
+    @discardableResult
+    public func download(_ url: TRURLConvertible,
+                         headers: [String: String]? = nil,
+                         fileName: String? = nil) -> TRDownloadTask? {
+
+        do {
+            let validURL = try url.asURL()
+            let download = sessionManager.download(validURL, headers: headers, fileName: fileName)
+            return nil
+        } catch {
+            TiercelLog("[manager] url error：\(url)", identifier: identifier)
+            return nil
+        }
+    }
 
 }
 
 
+extension TRSessionManager {
+
+
+}

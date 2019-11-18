@@ -8,6 +8,6 @@
 
 import UIKit
 
-@objcMembers class TRSessionConfiguration: NSObject {
+@objcMembers public class TRSessionConfiguration: NSObject {
 
 }

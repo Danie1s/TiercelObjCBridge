@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E1385E0C2382E03000DC580C /* TRDownloadTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1385E0B2382E03000DC580C /* TRDownloadTask.swift */; };
+		E1385E0E2382E0BA00DC580C /* TRURLConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1385E0D2382E0BA00DC580C /* TRURLConvertible.swift */; };
 		E1DA644C237FDD73005FD6A9 /* TiercelObjCBridge.h in Headers */ = {isa = PBXBuildFile; fileRef = E1DA644A237FDD73005FD6A9 /* TiercelObjCBridge.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E1DA6454237FDDDA005FD6A9 /* TRSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1DA6453237FDDDA005FD6A9 /* TRSessionManager.swift */; };
 		E1DA6460237FDFAC005FD6A9 /* Tiercel.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E1DA645F237FDFAC005FD6A9 /* Tiercel.framework */; };
@@ -35,6 +37,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		E1385E0B2382E03000DC580C /* TRDownloadTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TRDownloadTask.swift; sourceTree = "<group>"; };
+		E1385E0D2382E0BA00DC580C /* TRURLConvertible.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TRURLConvertible.swift; sourceTree = "<group>"; };
 		E1DA6447237FDD73005FD6A9 /* TiercelObjCBridge.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = TiercelObjCBridge.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E1DA644A237FDD73005FD6A9 /* TiercelObjCBridge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TiercelObjCBridge.h; sourceTree = "<group>"; };
 		E1DA644B237FDD73005FD6A9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -109,6 +113,8 @@
 			children = (
 				E1DA6453237FDDDA005FD6A9 /* TRSessionManager.swift */,
 				E1DA6484237FEF22005FD6A9 /* TRSessionConfiguration.swift */,
+				E1385E0B2382E03000DC580C /* TRDownloadTask.swift */,
+				E1385E0D2382E0BA00DC580C /* TRURLConvertible.swift */,
 			);
 			path = General;
 			sourceTree = "<group>";
@@ -253,8 +259,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E1385E0C2382E03000DC580C /* TRDownloadTask.swift in Sources */,
 				E1DA6454237FDDDA005FD6A9 /* TRSessionManager.swift in Sources */,
 				E1DA6485237FEF22005FD6A9 /* TRSessionConfiguration.swift in Sources */,
+				E1385E0E2382E0BA00DC580C /* TRURLConvertible.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

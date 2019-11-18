@@ -18,8 +18,11 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
-    
+
+    TRSessionConfiguration *config = [[TRSessionConfiguration alloc] init];
+    TRSessionManager *manager = [[TRSessionManager alloc] initWithIdentifier:@"Daniels" configuration:config];
+    [manager download:<#(id<TRURLConvertible> _Nonnull)#> headers:<#(NSDictionary<NSString *,NSString *> * _Nullable)#> fileName:<#(NSString * _Nullable)#>]
+
 }
 
 
