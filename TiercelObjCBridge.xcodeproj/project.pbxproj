@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E101E40423838A8E0006C296 /* TRCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = E101E40323838A8E0006C296 /* TRCache.swift */; };
+		E101E4062383AB3F0006C296 /* TRCommon.swift in Sources */ = {isa = PBXBuildFile; fileRef = E101E4052383AB3F0006C296 /* TRCommon.swift */; };
+		E101E4092383D5E60006C296 /* TaskInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = E101E4082383D5E60006C296 /* TaskInfo.swift */; };
+		E101E40B2383D9900006C296 /* UIDevice+Free.swift in Sources */ = {isa = PBXBuildFile; fileRef = E101E40A2383D9900006C296 /* UIDevice+Free.swift */; };
 		E1385E0C2382E03000DC580C /* TRDownloadTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1385E0B2382E03000DC580C /* TRDownloadTask.swift */; };
 		E1385E0E2382E0BA00DC580C /* TRURLConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1385E0D2382E0BA00DC580C /* TRURLConvertible.swift */; };
 		E1DA644C237FDD73005FD6A9 /* TiercelObjCBridge.h in Headers */ = {isa = PBXBuildFile; fileRef = E1DA644A237FDD73005FD6A9 /* TiercelObjCBridge.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -37,6 +41,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		E101E40323838A8E0006C296 /* TRCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TRCache.swift; sourceTree = "<group>"; };
+		E101E4052383AB3F0006C296 /* TRCommon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TRCommon.swift; sourceTree = "<group>"; };
+		E101E4082383D5E60006C296 /* TaskInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskInfo.swift; sourceTree = "<group>"; };
+		E101E40A2383D9900006C296 /* UIDevice+Free.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIDevice+Free.swift"; sourceTree = "<group>"; };
 		E1385E0B2382E03000DC580C /* TRDownloadTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TRDownloadTask.swift; sourceTree = "<group>"; };
 		E1385E0D2382E0BA00DC580C /* TRURLConvertible.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TRURLConvertible.swift; sourceTree = "<group>"; };
 		E1DA6447237FDD73005FD6A9 /* TiercelObjCBridge.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = TiercelObjCBridge.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -79,6 +87,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		E101E4072383D5C30006C296 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				E101E4082383D5E60006C296 /* TaskInfo.swift */,
+				E101E40A2383D9900006C296 /* UIDevice+Free.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 		E1DA643D237FDD73005FD6A9 = {
 			isa = PBXGroup;
 			children = (
@@ -103,6 +120,7 @@
 			children = (
 				E1DA644A237FDD73005FD6A9 /* TiercelObjCBridge.h */,
 				E1DA644B237FDD73005FD6A9 /* Info.plist */,
+				E101E4072383D5C30006C296 /* Extensions */,
 				E1DA6452237FDDAF005FD6A9 /* General */,
 			);
 			path = TiercelObjCBridge;
@@ -111,10 +129,12 @@
 		E1DA6452237FDDAF005FD6A9 /* General */ = {
 			isa = PBXGroup;
 			children = (
+				E101E4052383AB3F0006C296 /* TRCommon.swift */,
 				E1DA6453237FDDDA005FD6A9 /* TRSessionManager.swift */,
 				E1DA6484237FEF22005FD6A9 /* TRSessionConfiguration.swift */,
 				E1385E0B2382E03000DC580C /* TRDownloadTask.swift */,
 				E1385E0D2382E0BA00DC580C /* TRURLConvertible.swift */,
+				E101E40323838A8E0006C296 /* TRCache.swift */,
 			);
 			path = General;
 			sourceTree = "<group>";
@@ -259,8 +279,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E101E4062383AB3F0006C296 /* TRCommon.swift in Sources */,
+				E101E40B2383D9900006C296 /* UIDevice+Free.swift in Sources */,
+				E101E4092383D5E60006C296 /* TaskInfo.swift in Sources */,
 				E1385E0C2382E03000DC580C /* TRDownloadTask.swift in Sources */,
 				E1DA6454237FDDDA005FD6A9 /* TRSessionManager.swift in Sources */,
+				E101E40423838A8E0006C296 /* TRCache.swift in Sources */,
 				E1DA6485237FEF22005FD6A9 /* TRSessionConfiguration.swift in Sources */,
 				E1385E0E2382E0BA00DC580C /* TRURLConvertible.swift in Sources */,
 			);

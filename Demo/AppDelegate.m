@@ -16,8 +16,17 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    // Override point for customization after application launch.
+    
+    TRSessionConfiguration *configuraion = [[TRSessionConfiguration alloc] init];
+    self.sessionManager = [[TRSessionManager alloc] initWithIdentifier:@"ViewController" configuration:configuraion];
+    
     return YES;
+}
+
+- (void)application:(UIApplication *)application handleEventsForBackgroundURLSession:(NSString *)identifier completionHandler:(void (^)(void))completionHandler {
+    if (identifier == self.sessionManager.identifier) {
+        self.sessionManager.completionHandler = completionHandler;
+    }
 }
 
 

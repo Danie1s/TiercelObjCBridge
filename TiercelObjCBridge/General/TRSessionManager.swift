@@ -13,13 +13,28 @@ import Tiercel
 
     private let sessionManager: SessionManager
     
-    public static var logLevel: LogLevel = .detailed
+    public static var logLevel: TRLogLevel = .detailed {
+        didSet {
+            switch logLevel {
+            case .detailed:
+                SessionManager.logLevel = .detailed
+            case .simple:
+                SessionManager.logLevel = .simple
+            case .none:
+                SessionManager.logLevel = .none
+            }
+        }
+    }
 
-    public static var isControlNetworkActivityIndicator = true
+    public static var isControlNetworkActivityIndicator = true {
+        didSet {
+            SessionManager.isControlNetworkActivityIndicator = isControlNetworkActivityIndicator
+        }
+    }
 
     public let operationQueue: DispatchQueue
     
-    public let cache: Cache
+    public let cache: TRCache
     
     public let identifier: String
     
@@ -33,26 +48,23 @@ import Tiercel
     }
     
     
-    public var configuration: SessionConfiguration {
-        get {
-            return sessionManager.configuration
-        }
-        set {
+    public var configuration: TRSessionConfiguration {
+        didSet {
+            var newValue = SessionConfiguration()
+            newValue.timeoutIntervalForRequest = configuration.timeoutIntervalForRequest
             sessionManager.configuration = newValue
         }
     }
     
-    public var status: Status {
-        return sessionManager.status
+    public var status: TRStatus {
+        return TRStatus(sessionManager.status)
     }
     
-    public var tasks: [DownloadTask] {
-        return sessionManager.tasks
-    }
+    public private(set) var tasks: [TRDownloadTask] = []
     
     
-    public var completedTasks: [DownloadTask] {
-        return sessionManager.completedTasks
+    public var completedTasks: [TRDownloadTask] {
+        return tasks.filter { $0.status == .succeeded }
     }
     
     public var progress: Progress {
@@ -67,24 +79,24 @@ import Tiercel
         return sessionManager.timeRemaining
     }
 
-
-    public init(_ identifier: String,
+    public init(identifier: String,
                             configuration: TRSessionConfiguration,
-                            operationQueue: DispatchQueue = DispatchQueue(label: "com.Tiercel.SessionManager.operationQueue")) {
+                            operationQueue: DispatchQueue) {
 
         let config = SessionConfiguration()
         sessionManager = SessionManager.init(identifier, configuration: config, operationQueue: operationQueue)
+        cache = TRCache(cache: sessionManager.cache)
         self.operationQueue = sessionManager.operationQueue
-        cache = sessionManager.cache
         self.identifier = sessionManager.identifier
+        self.configuration = configuration
+        self.tasks = sessionManager.tasks.map { TRDownloadTask($0) }
         super.init()
 
     }
 
-
-    public convenience init(_ identifier: String,
+    public convenience init(identifier: String,
                             configuration: TRSessionConfiguration) {
-        self.init(identifier, configuration: configuration)
+        self.init(identifier: identifier, configuration: configuration, operationQueue: DispatchQueue(label: "com.Tiercel.SessionManager.operationQueue"))
     }
     
     public func invalidate() {
@@ -93,24 +105,170 @@ import Tiercel
     }
 
     @discardableResult
-    public func download(_ url: TRURLConvertible,
-                         headers: [String: String]? = nil,
-                         fileName: String? = nil) -> TRDownloadTask? {
-
-        do {
-            let validURL = try url.asURL()
-            let download = sessionManager.download(validURL, headers: headers, fileName: fileName)
+    public func download(url: TRURLConvertible,
+                         headers: [String: String]?,
+                         fileName: String?) -> TRDownloadTask? {
+        if let downloadTask = sessionManager.download(asURLConvertible(url), headers: headers, fileName: fileName) {
+            let convertDownloadTask = TRDownloadTask(downloadTask)
+            tasks.append(convertDownloadTask)
+            return convertDownloadTask
+        } else {
             return nil
+        }
+
+    }
+    
+    @discardableResult
+    public func download(url: TRURLConvertible) -> TRDownloadTask? {
+        return download(url: url, headers: nil, fileName: nil)
+    }
+
+    
+    
+    @discardableResult
+    public func multiDownload(urls: [TRURLConvertible],
+                              headers: [[String: String]]?,
+                              fileNames: [String]?) -> [TRDownloadTask] {
+        let convertURLs = urls.map { asURLConvertible($0) }
+        let downloadTasks = sessionManager.multiDownload(convertURLs, headers: headers, fileNames: fileNames)
+        let convertDownloadTasks = downloadTasks.map { TRDownloadTask($0) }
+        tasks.append(contentsOf: convertDownloadTasks)
+        return convertDownloadTasks
+    }
+    
+    
+    @discardableResult
+    public func multiDownload(urls: [TRURLConvertible]) -> [TRDownloadTask] {
+        return multiDownload(urls: urls, headers: nil, fileNames: nil)
+    }
+    
+
+    
+    
+    public func fetchTask(url: TRURLConvertible) -> TRDownloadTask? {
+        do {
+            let validURL = try url.tr_asURL()
+            return tasks.first { $0.url == validURL }
         } catch {
-            TiercelLog("[manager] url error：\(url)", identifier: identifier)
             return nil
         }
     }
+    
+    public func start(url: TRURLConvertible) {
+        sessionManager.start(asURLConvertible(url))
+    }
+    
+    public func start(task: TRDownloadTask) {
+        sessionManager.start(task.downloadTask)
+    }
+    
+    public func suspend(url: TRURLConvertible, onMainQueue: Bool, handler: Handler<TRDownloadTask>?) {
+        sessionManager.suspend(asURLConvertible(url), onMainQueue: onMainQueue) { [weak self] _ in
+            if let task = self?.fetchTask(url: url) {
+                handler?(task)
+            }
+        }
+    }
+    
+    public func suspend(url: TRURLConvertible) {
+        suspend(url: url, onMainQueue: true, handler: nil)
+    }
 
+
+    public func cancel(url: TRURLConvertible, onMainQueue: Bool, handler: Handler<TRDownloadTask>?) {
+        guard let task = fetchTask(url: url) else { return }
+        tasks.removeAll { $0.url == task.url}
+        sessionManager.cancel(asURLConvertible(url), onMainQueue: onMainQueue) { [weak self] _ in
+            if let task = self?.fetchTask(url: url) {
+                handler?(task)
+            }
+        }
+    }
+    
+    public func cancel(url: TRURLConvertible) {
+        cancel(url: url, onMainQueue: true, handler: nil)
+    }
+    
+    public func remove(url: TRURLConvertible, completely: Bool, onMainQueue: Bool, handler: Handler<TRDownloadTask>?) {
+        guard let task = fetchTask(url: url) else { return }
+        tasks.removeAll { $0.url == task.url}
+        sessionManager.remove(asURLConvertible(url), completely: completely, onMainQueue: onMainQueue) { [weak self] _ in
+            if let task = self?.fetchTask(url: url) {
+                 handler?(task)
+             }
+        }
+    }
+    
+    public func remove(url: TRURLConvertible) {
+        remove(url: url, completely: false, onMainQueue: true, handler: nil)
+    }
+    
+    public func totalStart() {
+        self.tasks.forEach { task in
+            start(task: task)
+        }
+    }
+    
+    public func totalSuspend(onMainQueue: Bool, handler: Handler<TRSessionManager>?) {
+        sessionManager.totalSuspend(onMainQueue: onMainQueue) { [weak self] _ in
+            guard let self = self else { return }
+            handler?(self)
+        }
+    }
+    
+    public func totalSuspend() {
+        totalSuspend(onMainQueue: true, handler: nil)
+    }
+    
+    public func totalCancel(onMainQueue: Bool, handler: Handler<TRSessionManager>?) {
+        tasks.removeAll()
+        sessionManager.totalCancel(onMainQueue: onMainQueue) { [weak self] _ in
+            guard let self = self else { return }
+            handler?(self)
+        }
+    }
+    
+    public func totalCancel() {
+        totalCancel(onMainQueue: true, handler: nil)
+    }
+    
+    public func totalRemove(completely: Bool, onMainQueue: Bool, handler: Handler<TRSessionManager>?) {
+        tasks.removeAll()
+        sessionManager.totalRemove(completely: completely, onMainQueue: onMainQueue) { [weak self] _ in
+            guard let self = self else { return }
+            handler?(self)
+        }
+    }
+    
+    public func totalRemove() {
+        totalRemove(completely: false, onMainQueue: true, handler: nil)
+    }
+    
+    @discardableResult
+    public func progress(onMainQueue: Bool = true, handler: @escaping Handler<TRSessionManager>) -> Self {
+        sessionManager.progress(onMainQueue: onMainQueue) { [weak self] _ in
+            guard let self = self else { return }
+            handler(self)
+        }
+        return self
+    }
+    
+    @discardableResult
+    public func success(onMainQueue: Bool = true, handler: @escaping Handler<TRSessionManager>) -> Self {
+        sessionManager.success(onMainQueue: onMainQueue) { [weak self] _ in
+            guard let self = self else { return }
+            handler(self)
+        }
+        return self
+    }
+    
+    @discardableResult
+    public func failure(onMainQueue: Bool = true, handler: @escaping Handler<TRSessionManager>) -> Self {
+        sessionManager.failure(onMainQueue: onMainQueue) { [weak self] _ in
+            guard let self = self else { return }
+            handler(self)
+        }
+        return self
+    }
 }
 
-
-extension TRSessionManager {
-
-
-}

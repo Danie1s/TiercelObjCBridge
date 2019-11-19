@@ -17,7 +17,7 @@ import Tiercel
         case incorrect
     }
 
-    private let downloadTask: DownloadTask
+    internal let downloadTask: DownloadTask
 
     public var filePath: String {
         return downloadTask.filePath
@@ -29,8 +29,8 @@ import Tiercel
 
 
 
-    public var status: Status {
-        return downloadTask.status
+    public var status: TRStatus {
+        return TRStatus(downloadTask.status)
     }
 
     public var validation: TRValidation {
@@ -45,11 +45,14 @@ import Tiercel
         }
     }
 
-    public let url: URL
+    public var url: URL {
+        return downloadTask.url
+    }
 
 
-
-    public let progress: Progress = Progress()
+    public var progress: Progress {
+        return downloadTask.progress
+    }
 
     public var startDate: Double {
         return downloadTask.startDate
@@ -78,70 +81,60 @@ import Tiercel
     }
 
 
-    internal init(_ url: URL,
-                  _ downloadTask: DownloadTask) {
-        self.url = url
+    internal init(_ downloadTask: DownloadTask) {
         self.downloadTask = downloadTask;
+    }
+    
+    
+    @discardableResult
+    public func validateFile(code: String,
+                             type: TRFileVerificationType,
+                             onMainQueue: Bool = true,
+                             handler: @escaping Handler<TRDownloadTask>) -> Self {
+        let convertType: FileVerificationType
+        switch type {
+        case .md5:
+            convertType = .md5
+        case .sha1:
+            convertType = .sha1
+        case .sha256:
+            convertType = .sha256
+        case .sha512:
+            convertType = .sha512
+        }
+        downloadTask.validateFile(code: code, type: convertType, onMainQueue: onMainQueue) { [weak self] _ in
+            guard let self = self else { return }
+            handler(self)
+        }
+        return self
+    }
+    
+    @discardableResult
+    public func progress(onMainQueue: Bool = true, handler: @escaping Handler<TRDownloadTask>) -> Self {
+        downloadTask.progress(onMainQueue: onMainQueue) { [weak self] _ in
+            guard let self = self else { return }
+            handler(self)
+        }
+        return self
+    }
+
+    @discardableResult
+    public func success(onMainQueue: Bool = true, handler: @escaping Handler<TRDownloadTask>) -> Self {
+        downloadTask.success(onMainQueue: onMainQueue) { [weak self] _ in
+            guard let self = self else { return }
+            handler(self)
+        }
+        return self
+
+    }
+
+    @discardableResult
+    public func failure(onMainQueue: Bool = true, handler: @escaping Handler<TRDownloadTask>) -> Self {
+        downloadTask.failure(onMainQueue: onMainQueue) { [weak self] _ in
+            guard let self = self else { return }
+            handler(self)
+        }
+        return self
     }
 
 }
-
-//extension DownloadTask {
-//    @discardableResult
-//    public func validateFile(code: String,
-//                             type: FileVerificationType,
-//                             onMainQueue: Bool = true,
-//                             _ handler: @escaping Handler<DownloadTask>) -> Self {
-//        return operationQueue.sync {
-//            if verificationCode == code &&
-//                verificationType == type &&
-//                validation != .unkown {
-//                shouldValidateFile = false
-//            } else {
-//                shouldValidateFile = true
-//                verificationCode = code
-//                verificationType = type
-//            }
-//            self.validateExecuter = Executer(onMainQueue: onMainQueue, handler: handler)
-//            if let manager = manager {
-//                manager.cache.storeTasks(manager.tasks)
-//            }
-//            if status == .succeeded {
-//                validateFile()
-//            }
-//            return self
-//        }
-//
-//    }
-//}
-//
-//extension Array where Element == DownloadTask {
-//    @discardableResult
-//    public func progress(onMainQueue: Bool = true, _ handler: @escaping Handler<DownloadTask>) -> [Element] {
-//        self.forEach { $0.progress(onMainQueue: onMainQueue, handler) }
-//        return self
-//    }
-//
-//    @discardableResult
-//    public func success(onMainQueue: Bool = true, _ handler: @escaping Handler<DownloadTask>) -> [Element] {
-//        self.forEach { $0.success(onMainQueue: onMainQueue, handler) }
-//        return self
-//    }
-//
-//    @discardableResult
-//    public func failure(onMainQueue: Bool = true, _ handler: @escaping Handler<DownloadTask>) -> [Element] {
-//        self.forEach { $0.failure(onMainQueue: onMainQueue, handler) }
-//        return self
-//    }
-//
-//    public func validateFile(codes: [String],
-//                             type: FileVerificationType,
-//                             onMainQueue: Bool = true,
-//                             _ handler: @escaping Handler<DownloadTask>) -> [Element] {
-//        for (index, task) in self.enumerated() {
-//            guard let code = codes.safeObject(at: index) else { continue }
-//            task.validateFile(code: code, type: type, onMainQueue: onMainQueue, handler)
-//        }
-//        return self
-//    }
-//}

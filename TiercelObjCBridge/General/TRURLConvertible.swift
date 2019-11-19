@@ -11,24 +11,46 @@ import Tiercel
 
 @objc public protocol TRURLConvertible {
 
-    func asURL() throws -> URL
+    func tr_asURL() throws -> URL
 }
 
 extension NSString: TRURLConvertible {
 
-    public func asURL() throws -> URL {
-        return try (self as String).asURL()
+    public func tr_asURL() throws -> URL {
+        return try self.asURLConvertible().asURL()
+    }
+    
+    internal func asURLConvertible() -> URLConvertible {
+        return self as String
     }
 }
 
 extension NSURL: TRURLConvertible {
 
-    public func asURL() throws -> URL { return try (self as URL).asURL() }
+    public func tr_asURL() throws -> URL { return try self.asURLConvertible().asURL() }
+    
+    internal func asURLConvertible() -> URLConvertible {
+        return self as URL
+    }
 }
 
 extension NSURLComponents: TRURLConvertible {
 
-    public func asURL() throws -> URL {
-        return try (self as URLComponents).asURL()
+    public func tr_asURL() throws -> URL {
+        return try self.asURLConvertible().asURL()
+    }
+    
+    internal func asURLConvertible() -> URLConvertible {
+        return self as URLComponents
+    }
+}
+
+internal func asURLConvertible(_ url: TRURLConvertible) -> URLConvertible {
+    if let temp = url as? NSString {
+        return temp as String
+    } else if let temp = url as? NSURL {
+        return temp as URL
+    } else {
+        return url as! URLComponents
     }
 }
