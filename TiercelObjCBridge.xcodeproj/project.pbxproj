@@ -130,8 +130,8 @@
 			isa = PBXGroup;
 			children = (
 				E101E4052383AB3F0006C296 /* TRCommon.swift */,
-				E1DA6453237FDDDA005FD6A9 /* TRSessionManager.swift */,
 				E1DA6484237FEF22005FD6A9 /* TRSessionConfiguration.swift */,
+				E1DA6453237FDDDA005FD6A9 /* TRSessionManager.swift */,
 				E1385E0B2382E03000DC580C /* TRDownloadTask.swift */,
 				E1385E0D2382E0BA00DC580C /* TRURLConvertible.swift */,
 				E101E40323838A8E0006C296 /* TRCache.swift */,
