@@ -29,7 +29,7 @@ import Tiercel
 
 @objcMembers public class TRSessionConfiguration: NSObject {
     
-    internal var sessionManager: SessionManager?
+    internal weak var sessionManager: SessionManager?
     
     // 请求超时时间
     public var timeoutIntervalForRequest: TimeInterval = 60.0 {

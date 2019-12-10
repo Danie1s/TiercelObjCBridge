@@ -13,6 +13,8 @@
 		E101E40B2383D9900006C296 /* UIDevice+Free.swift in Sources */ = {isa = PBXBuildFile; fileRef = E101E40A2383D9900006C296 /* UIDevice+Free.swift */; };
 		E1385E0C2382E03000DC580C /* TRDownloadTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1385E0B2382E03000DC580C /* TRDownloadTask.swift */; };
 		E1385E0E2382E0BA00DC580C /* TRURLConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1385E0D2382E0BA00DC580C /* TRURLConvertible.swift */; };
+		E174DA06239FA5430085FD9E /* TiercelObjCBridge.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E1DA6447237FDD73005FD6A9 /* TiercelObjCBridge.framework */; };
+		E174DA07239FA5430085FD9E /* TiercelObjCBridge.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E1DA6447237FDD73005FD6A9 /* TiercelObjCBridge.framework */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		E1DA644C237FDD73005FD6A9 /* TiercelObjCBridge.h in Headers */ = {isa = PBXBuildFile; fileRef = E1DA644A237FDD73005FD6A9 /* TiercelObjCBridge.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E1DA6454237FDDDA005FD6A9 /* TRSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1DA6453237FDDDA005FD6A9 /* TRSessionManager.swift */; };
 		E1DA6460237FDFAC005FD6A9 /* Tiercel.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E1DA645F237FDFAC005FD6A9 /* Tiercel.framework */; };
@@ -26,7 +28,28 @@
 		E1DA6485237FEF22005FD6A9 /* TRSessionConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1DA6484237FEF22005FD6A9 /* TRSessionConfiguration.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		E174DA08239FA5430085FD9E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E1DA643E237FDD73005FD6A9 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E1DA6446237FDD73005FD6A9;
+			remoteInfo = TiercelObjCBridge;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXCopyFilesBuildPhase section */
+		E174DA0A239FA5430085FD9E /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				E174DA07239FA5430085FD9E /* TiercelObjCBridge.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		E1DA6462237FDFAC005FD6A9 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -81,6 +104,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E174DA06239FA5430085FD9E /* TiercelObjCBridge.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -206,10 +230,12 @@
 				E1DA6467237FE490005FD6A9 /* Sources */,
 				E1DA6468237FE490005FD6A9 /* Frameworks */,
 				E1DA6469237FE490005FD6A9 /* Resources */,
+				E174DA0A239FA5430085FD9E /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				E174DA09239FA5430085FD9E /* PBXTargetDependency */,
 			);
 			name = Demo;
 			productName = Demo;
@@ -301,6 +327,14 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		E174DA09239FA5430085FD9E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E1DA6446237FDD73005FD6A9 /* TiercelObjCBridge */;
+			targetProxy = E174DA08239FA5430085FD9E /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		E1DA6476237FE490005FD6A9 /* Main.storyboard */ = {
@@ -460,6 +494,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
+				MARKETING_VERSION = 1.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.Daniels.TiercelObjCBridge;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -487,6 +522,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
+				MARKETING_VERSION = 1.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.Daniels.TiercelObjCBridge;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;

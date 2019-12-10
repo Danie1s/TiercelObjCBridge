@@ -68,8 +68,11 @@ import Tiercel
     
     public var configuration: TRSessionConfiguration {
         didSet {
+            configuration.sessionManager = sessionManager
             var newValue = SessionConfiguration()
             newValue.timeoutIntervalForRequest = configuration.timeoutIntervalForRequest
+            newValue.maxConcurrentTasksLimit = configuration.maxConcurrentTasksLimit
+            newValue.allowsCellularAccess = configuration.allowsCellularAccess
             sessionManager.configuration = newValue
         }
     }
@@ -103,6 +106,7 @@ import Tiercel
 
         let config = SessionConfiguration()
         sessionManager = SessionManager.init(identifier, configuration: config, operationQueue: operationQueue)
+        configuration.sessionManager = sessionManager
         cache = TRCache(cache: sessionManager.cache)
         self.operationQueue = sessionManager.operationQueue
         self.identifier = sessionManager.identifier

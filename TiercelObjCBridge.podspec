@@ -1,7 +1,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'TiercelObjCBridge'
-  s.version          = '1.0.0'
+  s.version          = '1.0.1'
   s.swift_version   = '5.0'
   s.summary          = 'TiercelObjCBridge is an extension of Tiercel.'
 
