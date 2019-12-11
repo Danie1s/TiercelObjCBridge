@@ -18,6 +18,7 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
     TRSessionConfiguration *configuraion = [[TRSessionConfiguration alloc] init];
+    configuraion.allowsCellularAccess = YES;
     self.sessionManager = [[TRSessionManager alloc] initWithIdentifier:@"ViewController" configuration:configuraion];
     
     return YES;

@@ -69,11 +69,11 @@ import Tiercel
     public var configuration: TRSessionConfiguration {
         didSet {
             configuration.sessionManager = sessionManager
-            var newValue = SessionConfiguration()
-            newValue.timeoutIntervalForRequest = configuration.timeoutIntervalForRequest
-            newValue.maxConcurrentTasksLimit = configuration.maxConcurrentTasksLimit
-            newValue.allowsCellularAccess = configuration.allowsCellularAccess
-            sessionManager.configuration = newValue
+            var config = SessionConfiguration()
+            config.timeoutIntervalForRequest = configuration.timeoutIntervalForRequest
+            config.maxConcurrentTasksLimit = configuration.maxConcurrentTasksLimit
+            config.allowsCellularAccess = configuration.allowsCellularAccess
+            sessionManager.configuration = config
         }
     }
     
@@ -103,16 +103,19 @@ import Tiercel
     public init(identifier: String,
                             configuration: TRSessionConfiguration,
                             operationQueue: DispatchQueue) {
-
-        let config = SessionConfiguration()
-        sessionManager = SessionManager.init(identifier, configuration: config, operationQueue: operationQueue)
-        configuration.sessionManager = sessionManager
-        cache = TRCache(cache: sessionManager.cache)
-        self.operationQueue = sessionManager.operationQueue
-        self.identifier = sessionManager.identifier
+        self.identifier = identifier
+        self.operationQueue = operationQueue
+        var config = SessionConfiguration()
+        config.timeoutIntervalForRequest = configuration.timeoutIntervalForRequest
+        config.maxConcurrentTasksLimit = configuration.maxConcurrentTasksLimit
+        config.allowsCellularAccess = configuration.allowsCellularAccess
         self.configuration = configuration
-        tasks = sessionManager.tasks.map { TRDownloadTask($0) }
+        sessionManager = SessionManager(identifier, configuration: config, operationQueue: operationQueue)
+        self.configuration.sessionManager = sessionManager
+        cache = TRCache(cache: sessionManager.cache)
         super.init()
+        tasks = sessionManager.tasks.map { TRDownloadTask($0) }
+
     }
 
     public convenience init(identifier: String,
