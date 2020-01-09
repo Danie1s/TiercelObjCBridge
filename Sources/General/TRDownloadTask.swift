@@ -36,6 +36,22 @@ import Tiercel
     }
 
     internal let downloadTask: DownloadTask
+    
+    public var originalRequest: URLRequest? {
+        downloadTask.originalRequest
+    }
+
+    public var currentRequest: URLRequest? {
+        downloadTask.currentRequest
+    }
+
+    public var response: URLResponse? {
+        downloadTask.response
+    }
+    
+    public var statusCode: Int {
+        downloadTask.statusCode ?? -1
+    }
 
     public var filePath: String {
         return downloadTask.filePath
