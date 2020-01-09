@@ -12,7 +12,7 @@ Pod::Spec.new do |s|
 
   s.ios.deployment_target = '8.0'
 
-  s.source_files = 'TiercelObjCBridge/**/*.swift'
+  s.source_files = 'Sources/**/*.swift'
   s.requires_arc = true
   s.frameworks = 'CFNetwork'
   s.dependency 'Tiercel', '2.4.0'
