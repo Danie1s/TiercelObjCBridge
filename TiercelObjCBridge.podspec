@@ -1,7 +1,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'TiercelObjCBridge'
-  s.version          = '1.0.3'
+  s.version          = '1.0.4'
   s.swift_version   = '5.0'
   s.summary          = 'TiercelObjCBridge is an extension of Tiercel.'
 
@@ -15,5 +15,5 @@ Pod::Spec.new do |s|
   s.source_files = 'Sources/**/*.swift'
   s.requires_arc = true
   s.frameworks = 'CFNetwork'
-  s.dependency 'Tiercel', '2.4.0'
+  s.dependency 'Tiercel', '2.4.1'
 end
